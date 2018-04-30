@@ -1,0 +1,12 @@
+library(lubridate)
+power <- read.table("household_power_consumption.txt",nrows = 2075259,na.strings = "?",header=TRUE,sep=";",colClasses = c('character',"character", rep('numeric', 7)))
+power$date_time <-  dmy_hms(paste(power$Date, power$Time))
+day1 <- dmy("01/02/2007")
+day2 <- dmy("02/02/2007")
+pow <- power[which(as.Date(power$date_time)==day2|as.Date(power$date_time)==day1),]
+png('plot3.png')
+with(pow,plot(date_time,Sub_metering_1,ylab = "Energy sub metering",xlab="", type="l"))
+lines(pow$date_time,pow$Sub_metering_2,col="red")
+lines(pow$date_time,pow$Sub_metering_3,col="blue")
+legend("topright",legend = c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),col=c("black","red","blue"),lty=c(1,1,1))
+dev.off()
